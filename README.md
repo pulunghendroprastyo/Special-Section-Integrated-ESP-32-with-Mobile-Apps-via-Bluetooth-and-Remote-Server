@@ -1,10 +1,3 @@
-Created by: Pulung Hendro Prastyo, M.Eng.
-
-Date: 24 December 2024.
-
-Politeknik Negeri Ujung Pandang.
-
----
 
 # Special Section: Integrated ESP-32 with Mobile Apps via Bluetooth and Remote-Server
 
@@ -54,7 +47,7 @@ The system consists of three main components:
    - Data is transmitted over Bluetooth
 
 2. **Mobile App**:
-   - **Bluetooth Module**: Handles Bluetoot connection and data retrieval.
+   - **Bluetooth Module**: Handles Bluetooth connection and data retrieval.
    - **UI Module**: Displays sensor data in real-time.
    - **HTTPs Module**: Sends data to the server using RESTful APIs.
 
@@ -159,6 +152,7 @@ void loop() {
 
 ### 2. Mobile Application Setup
 - Open the project in Android Studio.
+- Add library implementation ("com.jjoe64:graphview:4.2.2") as graph Visualization in Gradle
 - Add Bluetooth and Internet permissions:
 
 #### Android `AndroidManifest.xml`
@@ -174,7 +168,7 @@ void loop() {
 
 #### Android `MainActivity.kt`
 ```kotlin
- import android.annotation.SuppressLint
+import android.annotation.SuppressLint
 import android.bluetooth.BluetoothAdapter
 import android.bluetooth.BluetoothDevice
 import android.bluetooth.BluetoothSocket
@@ -360,6 +354,63 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+
+#### Android `Activity_main.xml`
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finding device ...."
+        android:layout_below="@id/connectButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textColor="#000000"/>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_margin="10dp"
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@id/statusText"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/graph"
+        android:id="@+id/temperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature: -- °C"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/temperatureText"
+        android:id="@+id/humidityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity: -- %"
+        android:textSize="18sp"/>
+
+</RelativeLayout>
+
+```
 ```
 
 - For detail code, you can use project ESP32BLE Folder. Then Build and run the app on your device.
@@ -369,6 +420,7 @@ class MainActivity : AppCompatActivity() {
 
 ### 3. Server Setup
 - Set up a REST API endpoint using PHP.
+- Database uses dht11_data  as table that consists of id_sensor (int), temperature (float), humidity (float),timestemp(timestemp)
 - Code:
 ```php
 <?php
@@ -431,4 +483,5 @@ Contributions are welcome! Feel free to fork the repository and submit a pull re
 
 ## Contact
 For any questions or issues, please reach out to [your_email@example.com].
+
 
