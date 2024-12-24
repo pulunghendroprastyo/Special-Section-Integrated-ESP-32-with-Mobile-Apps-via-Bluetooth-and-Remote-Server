@@ -359,34 +359,59 @@ class MainActivity : AppCompatActivity() {
 ```
 
 - For detail code, you can use project ESP32BLE Folder. Then Build and run the app on your device.
+## UI Android
+
+![Application Architecture](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/mobile.png)
 
 ### 3. Server Setup
-- Set up a REST API endpoint using Flask, Node.js, or any other framework.
-- Example using Flask:
-```python
-from flask import Flask, request
+- Set up a REST API endpoint using PHP.
+- Code:
+```php
+<?php
+header('Content-Type: application/json');
+// Konfigurasi koneksi database sesuaikan dengan database anda
+$host = "localhost";
+$user = "****";
+$password = "****";
+$database = "*****";
 
-app = Flask(__name__)
+// Koneksi ke database
+$conn = new mysqli($host, $user, $password, $database);
 
-@app.route('/data', methods=['POST'])
-def receive_data():
-    data = request.json
-    print("Received data:", data)
-    return {"status": "success"}, 200
+// Cek koneksi
+if ($conn->connect_error) {
+    die(json_encode(["success" => false, "message" => "Database connection failed: " . $conn->connect_error]));
+}
 
-if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5000)
+// Mendapatkan data dari request (GET atau POST)
+$temperature = isset($_REQUEST['temperature']) ? $_REQUEST['temperature'] : null;
+$humidity = isset($_REQUEST['humidity']) ? $_REQUEST['humidity'] : null;
+
+// Validasi input
+if ($temperature === null || $humidity === null) {
+    echo json_encode(["success" => false, "message" => "Temperature or humidity is missing"]);
+    exit;
+}
+
+// Query untuk menyimpan data
+$stmt = $conn->prepare("INSERT INTO dht11_data (temperature, humidity) VALUES (?, ?)");
+$stmt->bind_param("dd", $temperature, $humidity);
+
+if ($stmt->execute()) {
+    echo json_encode(["success" => true, "message" => "Data saved successfully"]);
+} else {
+    echo json_encode(["success" => false, "message" => "Failed to save data: " . $stmt->error]);
+}
+
+// Tutup koneksi
+$stmt->close();
+$conn->close();
+?>
 ```
 
 ---
 
-## Screenshots
 
-### 1. Data Visualization on Mobile
-![Mobile App Screenshot](https://via.placeholder.com/400x800.png?text=Mobile+App+Screenshot)
-
-### 2. Server Logs
-![Server Logs](https://via.placeholder.com/800x400.png?text=Server+Logs)
 
 ---
 
