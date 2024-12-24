@@ -1,6 +1,9 @@
 Created by: Pulung Hendro Prastyo, M.eng.
+
 Date: 24 December 2024
+
 Politeknik Negeri Ujung Pandang
+
 
 # Special Section: Integrated ESP-32 with Mobile Apps via Bluetooth and Remote-Server
 
@@ -13,7 +16,7 @@ This repository contains the source code for a mobile application that connects 
 - **Bluetooth Communication**: Connect to the ESP32 device using Bluetooth (BLE).
 - **Real-Time Data Display**: Visualize sensor data on the mobile app.
 - **Server Integration**: Forward data to a remote server for storage or further analysis.
-- **Cross-Platform**: Works on both Android and iOS platforms.
+- **Platform**: Works on Android platforms.
 
 ---
 
@@ -22,7 +25,7 @@ This repository contains the source code for a mobile application that connects 
 The system consists of three main components:
 
 1. **ESP32 Device**:
-   - Collects data from sensors.
+   - Collects data from sensor DHT 22.
    - Sends data to the mobile application via Bluetooth.
 
 2. **Mobile Application**:
@@ -30,9 +33,9 @@ The system consists of three main components:
    - Displays the data in real-time.
    - Sends data to a remote server.
 
-3. **Remote Server**:
-   - Receives data from the mobile app via HTTP.
-   - Stores data in a database or processes it for analytics.
+3. **Remote Server (Hosting)**:
+   - Receives data from the mobile app via HTTPs (API).
+   - Stores data in a database.
 
 ### System Workflow
 
@@ -47,74 +50,109 @@ The system consists of three main components:
 ![Application Architecture](https://github.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/blob/master/Images/Architecture%20of%20System.png?raw=true)
 
 1. **ESP32 Bluetooth Communication**:
-   - Data is transmitted over BLE.
-   - UUIDs and services are defined for specific sensor data.
+   - Data is transmitted over Bluetooth
 
 2. **Mobile App**:
-   - **Bluetooth Module**: Handles BLE connection and data retrieval.
+   - **Bluetooth Module**: Handles Bluetoot connection and data retrieval.
    - **UI Module**: Displays sensor data in real-time.
-   - **HTTP Module**: Sends data to the server using RESTful APIs.
+   - **HTTPs Module**: Sends data to the server using RESTful APIs.
 
 3. **Server**:
    - **API Endpoint**: Receives data from the mobile app.
    - **Database**: Stores data for future use.
-   - **Dashboard (Optional)**: Provides analytics and visualizations.
-
----
-
-## Prerequisites
-
-1. **ESP32 Setup**:
-   - Install the necessary libraries for BLE communication.
-   - Load the firmware that streams sensor data over BLE.
-
-2. **Mobile Application**:
-   - Install Android Studio or Xcode (for iOS).
-   - Set up the required Bluetooth permissions.
-
-3. **Server**:
-   - A RESTful API endpoint.
-   - Optional: A database such as MySQL or MongoDB.
+   - **Dashboard **: Provides analytics and visualizations.
 
 ---
 
 ## Getting Started
 
+
+## IoT Schematic
+
+![Application Architecture](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/ESP%2032%20Schematic.PNG)
+
 ### 1. ESP32 Configuration
-- Program the ESP32 with Arduino IDE or PlatformIO.
-- Use the following libraries:
-  - `BLEDevice.h`
-  - `BLEUtils.h`
-  - `BLEServer.h`
+- Program the ESP32 with Arduino IDE .
 
-Example Code for ESP32:
+Code for ESP32:
 ```cpp
-#include <BLEDevice.h>
-#include <BLEServer.h>
-#include <BLEUtils.h>
-#include <BLE2902.h>
+#include <BluetoothSerial.h>
+#include <DHT.h>
+#include <LiquidCrystal_I2C.h>
 
-BLECharacteristic *pCharacteristic;
+// Pin sensor DHT22
+#define DHTPIN 4
+#define DHTTYPE DHT22
+
+DHT dht(DHTPIN, DHTTYPE);
+BluetoothSerial ESP_BT;
+
+// Inisialisasi LCD I2C (alamat default 0x27 atau 0x3F tergantung modul LCD)
+LiquidCrystal_I2C lcd(0x27, 16, 2); // 16 karakter dan 2 baris
 
 void setup() {
-  BLEDevice::init("ESP32-Sensor");
-  BLEServer *pServer = BLEDevice::createServer();
-  BLEService *pService = pServer->createService(BLEUUID("0000180d-0000-1000-8000-00805f9b34fb"));
+  Serial.begin(115200);
+  ESP_BT.begin("ESP32_DHT22");  // Nama Bluetooth
+  dht.begin();
+  Serial.println("ESP32 Bluetooth Initialized...");
+ 
 
-  pCharacteristic = pService->createCharacteristic(
-                    BLEUUID("00002a37-0000-1000-8000-00805f9b34fb"),
-                    BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-
-  pService->start();
-  BLEAdvertising *pAdvertising = BLEDevice::getAdvertising();
-  pAdvertising->start();
+   // Memulai LCD
+  lcd.init();
+  lcd.backlight();  // Menyalakan lampu latar LCD
+  lcd.setCursor(0, 0);
+  lcd.print("DHT 22 BLE");  // Menampilkan teks awal
+  delay(2000);
 }
 
 void loop() {
-  int sensorValue = analogRead(34);
-  pCharacteristic->setValue(sensorValue);
-  pCharacteristic->notify();
-  delay(1000);
+  // Membaca data dari sensor DHT22
+  float humidity = dht.readHumidity();
+  float temperature = dht.readTemperature();
+
+  // Mengecek jika pembacaan berhasil
+  if (isnan(humidity) || isnan(temperature)) {
+    Serial.println("Gagal membaca sensor!");
+    return;
+  }
+
+  // Menampilkan data ke serial monitor
+  Serial.print("Suhu: ");
+  Serial.print(temperature);
+  Serial.print(" C, Kelembapan: ");
+  Serial.print(humidity);
+  Serial.println(" %");
+
+  // Menampilkan suhu dan kelembapan ke LCD
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Temp: ");
+  lcd.print(temperature);
+  lcd.print((char)223);  // Karakter derajat
+  lcd.print("C");
+
+  lcd.setCursor(0, 1);
+  lcd.print("Hum : ");
+  lcd.print(humidity);
+  lcd.print("%");
+
+  // Mengirim data melalui Bluetooth
+ // Kirim data suhu dan kelembapan ke Bluetooth
+  // ESP_BT.print("Temp: ");
+  // ESP_BT.print(temperature);
+  // ESP_BT.print(", Humidity: ");
+  // ESP_BT.println(humidity);
+  // Kirim data suhu dan kelembapan melalui Bluetooth
+  String data = String(temperature) + "," + String(humidity);
+  ESP_BT.println(data);
+    // Kirim data suhu dan kelembapan ke smartphone
+    // ESP_BT.print("T:");
+    // ESP_BT.print(temperature);
+    // ESP_BT.print(",H:");
+    // ESP_BT.println(humidity);
+
+
+  delay(2000); // Kirim setiap 2 detik
 }
 ```
 
