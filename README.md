@@ -40,7 +40,7 @@ The system consists of three main components:
 
 ## Application Architecture
 
-![Application Architecture](https://via.placeholder.com/800x400.png?text=Application+Architecture)
+![Application Architecture](https://github.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/blob/master/Images/Architecture%20of%20System.png?raw=true)
 
 1. **ESP32 Bluetooth Communication**:
    - Data is transmitted over BLE.
