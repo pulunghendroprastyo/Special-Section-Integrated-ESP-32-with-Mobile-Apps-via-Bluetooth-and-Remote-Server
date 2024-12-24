@@ -354,6 +354,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 }
+```
 
 #### Android `Activity_main.xml`
 ```xml
@@ -409,8 +410,6 @@ class MainActivity : AppCompatActivity() {
         android:textSize="18sp"/>
 
 </RelativeLayout>
-
-```
 ```
 
 - For detail code, you can use project ESP32BLE Folder. Then Build and run the app on your device.
