@@ -1,6 +1,7 @@
 Created by: Pulung Hendro Prastyo, M.Eng.
-Date: 24 December 2024
-Politeknik Negeri Ujung Pandang
+Date: 24 December 2024.
+Politeknik Negeri Ujung Pandang.
+---
 
 # Special Section: Integrated ESP-32 with Mobile Apps via Bluetooth and Remote-Server
 
