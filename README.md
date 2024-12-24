@@ -63,7 +63,7 @@ The system consists of three main components:
 
 ## IoT Schematic
 
-![Application Architecture](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/ESP%2032%20Schematic.PNG)
+![IoT](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/ESP%2032%20Schematic.PNG)
 
 ### 1. ESP32 Configuration
 - Program the ESP32 with Arduino IDE .
@@ -415,11 +415,11 @@ class MainActivity : AppCompatActivity() {
 - For detail code, you can use project ESP32BLE Folder. Then Build and run the app on your device.
 ## UI Android
 
-![Application Architecture](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/mobile.png)
+![Mobile apps](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/mobile.png)
 
 ### 3. Server Setup
 - Set up a REST API endpoint using PHP.
-- Database uses dht11_data  
+- Database uses dht11_data as table that consists of 4 attributs, such as id_sensor, temperature, humidity, and timestemp  
 - Code:
 
 ```php
@@ -464,11 +464,7 @@ $stmt->close();
 $conn->close();
 ?>
 ```
-
----
-
-
-
+![Database](https://raw.githubusercontent.com/pulunghendroprastyo/Special-Section-Integrated-ESP-32-with-Mobile-Apps-via-Bluetooth-and-Remote-Server/refs/heads/master/Images/mobile.png)
 ---
 
 ## License
@@ -482,6 +478,10 @@ Contributions are welcome! Feel free to fork the repository and submit a pull re
 ---
 
 ## Contact
-For any questions or issues, please reach out to [your_email@example.com].
+For any questions or issues, please reach out to [pulung.hendro@poliupg.ac.id].
+
+This code created by
+Pulung Hendro Prastyo, S.S.T., M.Eng. MCE.
+Politeknik Negeri Ujung Pandang
 
 
