@@ -1,3 +1,7 @@
+Created by: Pulung Hendro Prastyo, M.eng.
+Date: 24 December 2024
+Politeknik Negeri Ujung Pandang
+
 # Special Section: Integrated ESP-32 with Mobile Apps via Bluetooth and Remote-Server
 
 This repository contains the source code for a mobile application that connects to an ESP32 device via Bluetooth to retrieve sensor data and send it to a remote server. The application is designed for seamless data collection, visualization, and forwarding for IoT projects.
