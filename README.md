@@ -420,8 +420,9 @@ class MainActivity : AppCompatActivity() {
 
 ### 3. Server Setup
 - Set up a REST API endpoint using PHP.
-- Database uses dht11_data  as table that consists of id_sensor (int), temperature (float), humidity (float),timestemp(timestemp)
+- Database uses dht11_data  
 - Code:
+
 ```php
 <?php
 header('Content-Type: application/json');
