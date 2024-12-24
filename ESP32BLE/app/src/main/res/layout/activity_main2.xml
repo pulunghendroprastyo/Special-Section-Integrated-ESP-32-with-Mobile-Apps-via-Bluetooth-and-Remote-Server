@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Button
+        android:id="@+id/connectButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Connect"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:id="@+id/statusText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Finding device ...."
+        android:layout_below="@id/connectButton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:textColor="#000000"/>
+
+    <com.jjoe64.graphview.GraphView
+        android:layout_margin="10dp"
+        android:id="@+id/graph"
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_below="@id/statusText"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/graph"
+        android:id="@+id/temperatureText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Temperature: -- °C"
+        android:textSize="18sp"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/temperatureText"
+        android:id="@+id/humidityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Humidity: -- %"
+        android:textSize="18sp"/>
+
+</RelativeLayout>
